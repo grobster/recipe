@@ -14,6 +14,7 @@ public class CookBookView extends SimpleGui implements Serializable {
 	private JButton addButton;
 	private JButton removeButton;
 	private JButton editButton;
+	private JScrollPane recipePane;
 	
 	public CookBookView(String programName, int frameWidth, int frameHeight) {
 		super(programName, frameWidth, frameHeight);
@@ -23,6 +24,9 @@ public class CookBookView extends SimpleGui implements Serializable {
 		//creat widgets
 		recipeArea = new JTextArea(recipeAreaWidth, recipeAreaHeight);
 		recipeArea.setMargin(new Insets(10, 10, 10, 10));
+		recipeArea.setLineWrap(true);
+		recipeArea.setWrapStyleWord(true);
+		recipePane = new JScrollPane(recipeArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants. HORIZONTAL_SCROLLBAR_NEVER);
 		nextButton = new JButton(">>");
 		previousButton = new JButton("<<");
 		editPanel = new JPanel();
@@ -32,7 +36,7 @@ public class CookBookView extends SimpleGui implements Serializable {
 		editButton = new JButton("Edit");
 		
 		//add widgets to panel
-		JComponent areaComponent = SimpleGui.addComponentNoLabel(recipeArea);
+		JComponent areaComponent = SimpleGui.addComponentNoLabel(recipePane);
 		JComponent addComponent = SimpleGui.addComponentNoLabel(addButton);
 		JComponent removeComponent = SimpleGui.addComponentNoLabel(removeButton);
 		JComponent editComponent = SimpleGui.addComponentNoLabel(editButton);

@@ -11,7 +11,9 @@ import java.io.*;
 public class EditRecipeView extends SimpleGui {
 	private JTextField recipeNameField;
 	private JTextArea ingredientsArea;
+	private JScrollPane ingredientsPane; // just added
 	private JTextArea instructionsArea;
+	private JScrollPane instructionsPane; // just added
 	private JButton saveButton;
 	private CookBook book;
 	
@@ -22,14 +24,20 @@ public class EditRecipeView extends SimpleGui {
 	
 	public void createView(String recipeNameString, String ingredientsString, String instructionsString) {
 		recipeNameField = new JTextField(20);
-		ingredientsArea = new JTextArea(15, 25);
-		instructionsArea = new JTextArea(15, 25);
+		ingredientsArea = new JTextArea(15, 35);
+		ingredientsArea.setLineWrap(true);
+		ingredientsArea.setWrapStyleWord(true);
+		instructionsArea = new JTextArea(15, 35);
+		instructionsArea.setLineWrap(true);
+		instructionsArea.setWrapStyleWord(true);
+		ingredientsPane = new JScrollPane(ingredientsArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants. HORIZONTAL_SCROLLBAR_NEVER);
+		instructionsPane = new JScrollPane(instructionsArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants. HORIZONTAL_SCROLLBAR_NEVER);
 		saveButton = new JButton("Save");
 		saveButton.addActionListener(new SaveButtonListener());
 		
 		JComponent nameComponent = SimpleGui.addComponentWithLabel(recipeNameString, recipeNameField);
-		JComponent ingredientComponent = SimpleGui.addComponentWithLabel(ingredientsString, ingredientsArea);
-		JComponent instructionsComponent = SimpleGui.addComponentWithLabel(instructionsString, instructionsArea);
+		JComponent ingredientComponent = SimpleGui.addComponentWithLabel(ingredientsString, ingredientsPane);
+		JComponent instructionsComponent = SimpleGui.addComponentWithLabel(instructionsString, instructionsPane);
 		JComponent saveButtonComponent = SimpleGui.addComponentNoLabel(saveButton);
 		
 		getMainPanel().add(nameComponent);
@@ -79,7 +87,7 @@ public class EditRecipeView extends SimpleGui {
 			Recipe newRecipe = new Recipe(recipeName, ingredients, instructions);
 			book.addRecipe(newRecipe);
 			save();
-			//getFrame().dispatchEvent(new WindowEvent(getFrame(), WindowEvent.WINDOW_CLOSING));
+			getFrame().dispatchEvent(new WindowEvent(getFrame(), WindowEvent.WINDOW_CLOSING));
 			
 		}
 	}
