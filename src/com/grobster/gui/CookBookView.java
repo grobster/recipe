@@ -15,6 +15,7 @@ public class CookBookView extends SimpleGui implements Serializable {
 	private JButton removeButton;
 	private JButton editButton;
 	private JScrollPane recipePane;
+	private JTextField searchField;
 	
 	public CookBookView(String programName, int frameWidth, int frameHeight) {
 		super(programName, frameWidth, frameHeight);
@@ -34,6 +35,7 @@ public class CookBookView extends SimpleGui implements Serializable {
 		addButton = new JButton("Add");
 		removeButton = new JButton("Remove");
 		editButton = new JButton("Edit");
+		searchField = new JTextField(35);
 		
 		//add widgets to panel
 		JComponent areaComponent = SimpleGui.addComponentNoLabel(recipePane);
@@ -41,6 +43,7 @@ public class CookBookView extends SimpleGui implements Serializable {
 		JComponent removeComponent = SimpleGui.addComponentNoLabel(removeButton);
 		JComponent editComponent = SimpleGui.addComponentNoLabel(editButton);
 		JPanel southPanel = new JPanel();
+		JComponent searchComponent = SimpleGui.addComponentWithLabel("Search: ", searchField);
 		
 		
 		southPanel.add(previousButton);
@@ -51,6 +54,7 @@ public class CookBookView extends SimpleGui implements Serializable {
 		editPanel.add(editComponent);
 		getFrame().getContentPane().add(BorderLayout.WEST, editPanel);
 		getFrame().getContentPane().add(BorderLayout.SOUTH, southPanel);
+		getFrame().getContentPane().add(BorderLayout.NORTH, searchComponent);
 		
 		//add Panels to mainPanel
 		getMainPanel().add(areaComponent);
@@ -85,6 +89,10 @@ public class CookBookView extends SimpleGui implements Serializable {
 	
 	public JButton getEditButton() {
 		return editButton;
+	}
+	
+	public JTextField getSearchField() {
+		return searchField;
 	}
 	
 	public static void main(String[] args) {

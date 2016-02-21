@@ -31,6 +31,7 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 		getPreviousButton().addActionListener(new PreviousButtonListener());
 		getNextButton().addActionListener(new NextButtonListener());
 		getAddButton().addActionListener(new AddRecipeListener());
+		getSearchField().addKeyListener(new SearchFieldListener());
 		displayCurrentRecipe(positionInBook);
 		setup();
 	}
@@ -74,6 +75,17 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 		displayCurrentRecipe(0);
 	}
 	
+	public Recipe searchRecipes(String rs) {
+		for (Recipe r: book.getRecipes()) {
+			if (r.getName().toLowerCase().equals(rs.toLowerCase())) {
+				displayCurrentRecipe(book.getRecipes().indexOf(r));
+				return r;
+			}
+		}
+		displayCurrentRecipe(positionInBook);
+		return null;
+	}
+	
 	
 	class PreviousButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -105,6 +117,24 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 		public void actionPerformed(ActionEvent e) {
 			EditRecipeView editView = new EditRecipeView("Edit View", 600, 400, book);
 			editView.createView("Recipe Name", "Ingredients", "Instructions");
+		}
+	}
+	
+	class SearchFieldListener implements KeyListener {
+		
+		public void keyPressed(KeyEvent e) {
+			String searchItem = getSearchField().getText();
+			searchRecipes(searchItem);
+		}
+		
+		public void keyReleased(KeyEvent e) {
+			String searchItem = getSearchField().getText();
+			searchRecipes(searchItem);
+		}
+		
+		public void keyTyped(KeyEvent e) {
+			String searchItem = getSearchField().getText();
+			searchRecipes(searchItem);
 		}
 	}
 }
