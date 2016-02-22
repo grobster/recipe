@@ -22,8 +22,6 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 		book.registerObserver((CookBookObserverInterface)this);
 		positionInBook = 0;
 		setup();
-		
-		
 	}
 	
 	public void createCookBookView(int recipeAreaHeight, int recipeAreaWidth) {
@@ -34,6 +32,7 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 		getSearchField().addKeyListener(new SearchFieldListener());
 		displayCurrentRecipe(positionInBook);
 		setup();
+		enableDisablePositionButtons();
 	}
 	
 	private void setup() {
@@ -78,7 +77,8 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 	public Recipe searchRecipes(String rs) {
 		for (Recipe r: book.getRecipes()) {
 			if (r.getName().toLowerCase().equals(rs.toLowerCase())) {
-				displayCurrentRecipe(book.getRecipes().indexOf(r));
+				positionInBook = book.getRecipes().indexOf(r);
+				displayCurrentRecipe(positionInBook);
 				return r;
 			}
 		}
@@ -86,6 +86,18 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 		return null;
 	}
 	
+	public void enableDisableButton(JButton button, boolean condition) {
+		if(condition) {
+			button.setEnabled(false);
+		} else {
+			button.setEnabled(true);
+		}
+	}
+	
+	public void enableDisablePositionButtons() {
+		enableDisableButton(getPreviousButton(), positionInBook == 0);
+		enableDisableButton(getNextButton(), positionInBook == book.getRecipes().size() - 1);
+	}
 	
 	class PreviousButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -97,6 +109,7 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 				System.out.println("Position: " + positionInBook);
 				displayCurrentRecipe(positionInBook);
 			}
+			enableDisablePositionButtons();
 		}
 	}
 	
@@ -110,6 +123,7 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 				System.out.println("Next Position: " + positionInBook);
 				displayCurrentRecipe(positionInBook);
 			}
+			enableDisablePositionButtons();
 		}
 	}
 	
@@ -121,20 +135,22 @@ public class CookBookViewAction extends CookBookView implements CookBookObserver
 	}
 	
 	class SearchFieldListener implements KeyListener {
-		
-		public void keyPressed(KeyEvent e) {
+		public void searchAction() {
 			String searchItem = getSearchField().getText();
 			searchRecipes(searchItem);
+			enableDisablePositionButtons();
+		}
+		
+		public void keyPressed(KeyEvent e) {
+			searchAction();
 		}
 		
 		public void keyReleased(KeyEvent e) {
-			String searchItem = getSearchField().getText();
-			searchRecipes(searchItem);
+			searchAction();
 		}
 		
 		public void keyTyped(KeyEvent e) {
-			String searchItem = getSearchField().getText();
-			searchRecipes(searchItem);
+			searchAction();
 		}
 	}
 }
